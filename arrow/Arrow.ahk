@@ -37,7 +37,7 @@ CapsLock &  Y::Send {Ins}
 			U::Send {Del}
 			Y::Send {Ins}
 
-~CapsLock::
+~CapsLock & F::
 	i := mod((i + 1),  2)
 	if (i == 1)
 	{
