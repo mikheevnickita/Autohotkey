@@ -1,6 +1,8 @@
 ﻿#SingleInstance force
 
+Stack := Object()
 i := 0
+
 Menu, tray, icon, kb_red.ico, , 1
 SetCapsLockState, AlwaysOff
 
@@ -66,5 +68,27 @@ CapsLock &  Y::Send {Ins}
 		Hotkey, SC027 , off
 		Hotkey, U     , off
 		Hotkey, Y     , off
+	}
+return
+
+~CapsLock & t::
+	MouseGetPos,,, WindowID
+	WinGetTitle, WindowName, ahk_id %WindowID%
+
+	IfWinExist, ahk_id %WindowID% %WindowName%
+	{
+		WinHide
+		Stack.Insert(WindowID)
+	}
+return
+
+~CapsLock & r::
+	if (Stack.MaxIndex() > 0 )
+	{
+		WinID := Stack[Stack.MaxIndex()]
+		Stack.Remove(Stack.MaxIndex())
+		WinShow, ahk_id %WinID%
+	} else {
+		MsgBox, No hidden windows in stack
 	}
 return
