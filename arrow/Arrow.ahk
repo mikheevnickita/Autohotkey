@@ -5,29 +5,42 @@ Stack := Object()
 Menu, tray, icon, kb_green.ico, , 1
 SetCapsLockState, AlwaysOff
 
-Hotkey, I     , off
-Hotkey, J     , off
-Hotkey, K     , off
-Hotkey, L     , off
-Hotkey, H     , off
-Hotkey, SC027 , off
+CapsLock & I::Send {Up}
+CapsLock & J::Send {Left}
+CapsLock & K::Send {Down}
+CapsLock & L::Send {Right}
+CapsLock & H::Send {Home}
+CapsLock & SC027::Send {End}
 
-Hotkey, U     , off
-Hotkey, O     , off
+CapsLock & U::Send ^{Left}
+CapsLock & O::Send ^{Right}
 
-Hotkey, Y     , off
+CapsLock & Y::Send ^{Del}
 
-CapsLock &  I::Send {Up}
-CapsLock &  J::Send {Left}
-CapsLock &  K::Send {Down}
-CapsLock &  L::Send {Right}
-CapsLock &  H::Send {Home}
-CapsLock &  SC027::Send {End}
 
-CapsLock &  U::Send ^{Left}
-CapsLock &  O::Send ^{Right}
+~CapsLock & a::
+MouseGetPos,,, WindowID
+WinGet, ExStyle, ExStyle, ahk_id %WindowID%
+WinGetTitle, WindowName, ahk_id %WindowID%
 
-CapsLock &  Y::Send {Del}
+IfWinExist, ahk_id %WindowID% %WindowName%
+{
+	if (ExStyle & 0x8)  ; 0x8 is WS_EX_TOPMOST.
+	{
+		Winset, AlwaysOnTop, off, ahk_id %currentWindow%
+		SplashImage,, x0 y0 b fs12, OFF always on top.
+		Sleep, 1500
+		SplashImage, Off
+	}
+	else
+	{
+		WinSet, AlwaysOnTop, on, ahk_id %currentWindow%
+		SplashImage,,x0 y0 b fs12, ON always on top.
+		Sleep, 1500
+		SplashImage, Off
+	}
+}
+return
 
 ~CapsLock & t::
 	MouseGetPos,,, WindowID
